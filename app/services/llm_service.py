@@ -88,7 +88,6 @@ class LLMService:
         Returns:
             Summarized text or llm_reply in a pydantic way
         """
-        print(input_content, current_operation.type, pdf_name)
         try:
             if current_operation.in_chat_mode():
                 prompt = self._build_chat_prompt(input_content, pdf_name)

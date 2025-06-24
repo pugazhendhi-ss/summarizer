@@ -60,7 +60,6 @@ class VectorService:
                 name="pdf_documents",
                 metadata={"description": "PDF document chunks for RAG"}
             )
-
         except Exception as e:
             raise e
 
@@ -324,71 +323,7 @@ class VectorService:
                 "error": str(e),
                 "query": query
             }
+a = ["yt", "yr3", "yd"]
+for i, word in enumerate(a):
+    print(i, word)
 
-    def delete_pdf_vectors(self, pdf_name: str) -> Dict[str, Any]:
-        """
-        Delete all vectors for a specific PDF.
-
-        Args:
-            pdf_name: Name of the PDF to delete
-
-        Returns:
-            Dictionary with deletion results
-        """
-        try:
-            # Get all documents for this PDF
-            results = self.collection.get(
-                where={"pdf_name": pdf_name},
-                include=["metadatas"]
-            )
-
-            if not results['ids']:
-                return {
-                    "success": True,
-                    "message": f"No vectors found for PDF: {pdf_name}",
-                    "deleted_count": 0
-                }
-
-            # Delete the documents
-            self.collection.delete(
-                where={"pdf_name": pdf_name}
-            )
-
-            deleted_count = len(results['ids'])
-
-            return {
-                "success": True,
-                "message": f"Successfully deleted vectors for PDF: {pdf_name}",
-                "deleted_count": deleted_count
-            }
-
-        except Exception as e:
-            return {
-                "success": False,
-                "error": str(e),
-                "pdf_name": pdf_name
-            }
-
-    def get_collection_info(self) -> Dict[str, Any]:
-        """
-        Get information about the current collection.
-
-        Returns:
-            Dictionary with collection information
-        """
-        try:
-            count = self.collection.count()
-
-            return {
-                "success": True,
-                "collection_name": self.collection.name,
-                "total_documents": count,
-                "persistence_mode": "persistent" if self.persist_db else "in-memory",
-                "embedding_model": "all-MiniLM-L6-v2"
-            }
-
-        except Exception as e:
-            return {
-                "success": False,
-                "error": str(e)
-            }

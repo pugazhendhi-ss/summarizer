@@ -53,7 +53,8 @@ class ChatService:
         prompt_template = OperationType(type="chat")
         query = self.augment_query(query)
         semantic_finding = vector_service.semantic_search(query)
-        top_k_match = semantic_finding["result"]
+        top_k_match = semantic_finding["results"]
+        print(top_k_match)
         chat_prompt = prompt_template.dynamic_prompt(query=query, history=history, context=top_k_match)
         return chat_prompt
 

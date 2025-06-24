@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Depends
+from fastapi import Form
 from fastapi.responses import JSONResponse
 import logging
 from datetime import datetime
@@ -123,11 +124,12 @@ The outlook for the animal products market remains cautiously optimistic, with d
 @pdf_router.post("/upload-pdf")
 async def upload_and_summarize(
         file: UploadFile = File(...),
-        operation: Literal["summarize", "chat"] = "chat",
+        operation: Literal["summarize", "chat"] = Form("chat"),
         pdf_service: PDFService = Depends(get_pdf_service),
 ):
     try:
         result = pdf_service.process_pdf(file)
+        print(operation)
         if result.status == "success":
             if operation == "summarize":
                 llm_service = get_llm_service()

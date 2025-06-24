@@ -27,6 +27,7 @@ class ChatService:
             self.memory.popitem(last=False)  # Oldest bot/MSP response
 
     def get_history(self):
+        """Retrieves the conversation history and returns in a structured format"""
         if not self.memory:
             return "No history found for the user, as they are just started their conversation."
         max_key_length = max(len(key) for key in self.memory)
@@ -41,7 +42,6 @@ class ChatService:
                 subsequent_indent=' ' * indent_space
             )
             history_str += f"{wrapped}\n"
-            # Add an extra newline after every 2 entries (a pair)
             if i % 2 == 1:
                 history_str += '\n'
         return history_str

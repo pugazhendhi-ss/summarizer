@@ -44,17 +44,16 @@ class ChatService:
             # Add an extra newline after every 2 entries (a pair)
             if i % 2 == 1:
                 history_str += '\n'
-        # print(f"History str ---> {history_str}")
         return history_str
 
 
     def get_dynamic_prompt(self, query):
+        """Generates dynamic prompt by filling the placeholder in the prompt template"""
         history = self.get_history()
         prompt_template = OperationType(type="chat")
         query = self.augment_query(query)
         semantic_finding = vector_service.semantic_search(query)
-        top_k_match = semantic_finding["results"]
-        print(top_k_match)
+        top_k_match = semantic_finding["results"]["documents"]
         chat_prompt = prompt_template.dynamic_prompt(query=query, history=history, context=top_k_match)
         return chat_prompt
 

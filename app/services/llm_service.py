@@ -1,5 +1,6 @@
-import os
 import logging
+import os
+
 from openai import AsyncOpenAI
 
 from app.pydantics.models import ChatResponse
@@ -40,7 +41,6 @@ class LLMService:
             grouped_summary = ""
             # Process each part
             for part_file in part_files:
-                print(f"Summarizing -> {part_file}")
                 part_path = os.path.join(pdf_dir, part_file)
 
                 # Read the part content
@@ -55,9 +55,7 @@ class LLMService:
                 grouped_summary += f"{part_file}\n\n {summarized_data}\n\n"
                 await self._save_summary(pdf_name, part_name, summarized_data)
 
-            # print(grouped_summary)
             final_summary = await self.invoke_llm(grouped_summary, OperationType(type="final"))
-            print(f"Final_summary ---> {final_summary}")
 
             return {
                 "success": True,
@@ -111,7 +109,6 @@ class LLMService:
             )
 
             llm_response =  response.choices[0].message.content
-            print(llm_response)
             if current_operation.in_chat_mode():
                 return self.chat_response(llm_response, pdf_name)
             return response.choices[0].message.content
@@ -155,7 +152,6 @@ class LLMService:
             global_memory[pdf_name] = chat_service
         chat_service.add_user_message(user_query)
         dynamic_prompt = chat_service.get_dynamic_prompt(user_query)
-        print(dynamic_prompt)
         return dynamic_prompt
 
     def chat_response(self, llm_response: str, pdf_name: str):

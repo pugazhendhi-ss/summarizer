@@ -2,6 +2,13 @@ import streamlit as st
 import requests
 import time
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Global base URL from environment variable
+BASE_URL = os.getenv('API_BASE_URL', 'http://127.0.0.1:8000')
 
 st.set_page_config(
     page_title="PDF Analyzer",
@@ -82,7 +89,7 @@ def handle_summarize_pdf(uploaded_file):
 
             # Make request to unified endpoint with operation parameter
             response = requests.post(
-                'http://127.0.0.1:8000/upload-pdf',
+                f'{BASE_URL}/upload-pdf',
                 files=files,
                 data=data,  # Add the operation parameter
                 timeout=300  # 5 minutes timeout
@@ -119,7 +126,7 @@ def handle_setup_chat(uploaded_file):
 
             # Make request to unified endpoint with operation parameter
             response = requests.post(
-                'http://127.0.0.1:8000/upload-pdf',
+                f'{BASE_URL}/upload-pdf',
                 files=files,
                 data=data,  # Add the operation parameter
                 timeout=300  # 5 minutes timeout
@@ -238,7 +245,7 @@ def handle_chat_message(user_message):
 
         # Make request to chat endpoint
         response = requests.post(
-            'http://127.0.0.1:8000/chat',
+            f'{BASE_URL}/chat',
             json=chat_payload,
             timeout=60
         )
@@ -291,7 +298,7 @@ def add_sidebar_info():
 
         st.markdown("### Server status")
         try:
-            health_response = requests.get('http://127.0.0.1:8000/health', timeout=5)
+            health_response = requests.get(f'{BASE_URL}/health', timeout=5)
             if health_response.status_code == 200:
                 st.success("✅ API Server Connected")
             else:

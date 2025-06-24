@@ -3,13 +3,15 @@ import re
 import uuid
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
-import nltk
-from nltk.tokenize import sent_tokenize
-from nltk.data import find
-from sentence_transformers import SentenceTransformer
+
 import chromadb
+import nltk
 from chromadb.config import Settings
 from dotenv import load_dotenv
+from nltk.data import find
+from nltk.tokenize import sent_tokenize
+from sentence_transformers import SentenceTransformer
+
 from app.pydantics.models import PDFSuccessResponse
 
 load_dotenv()
@@ -114,8 +116,7 @@ class VectorService:
             return chunks
 
         except Exception as e:
-            print(f"Error while tokenizing: {e}")
-            return []
+            raise e
 
     def get_text_embedding(self, text: str) -> List[float]:
         """
@@ -323,7 +324,5 @@ class VectorService:
                 "error": str(e),
                 "query": query
             }
-a = ["yt", "yr3", "yd"]
-for i, word in enumerate(a):
-    print(i, word)
+
 

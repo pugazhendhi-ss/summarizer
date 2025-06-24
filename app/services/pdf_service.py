@@ -1,15 +1,12 @@
-import logging
 import os
 
 import fitz  # PyMuPDF
 
 from app.pydantics.models import PDFSuccessResponse, PDFErrorResponse
 
-logger = logging.getLogger(__name__)
-
 
 class PDFService:
-    """Simple PDF Service to extract and store text in parts"""
+    """PDF Service to extract and store text in parts"""
 
     def __init__(self):
         self.utils_dir = "app/utils"
@@ -21,7 +18,7 @@ class PDFService:
 
     def process_pdf(self, file) -> PDFSuccessResponse | PDFErrorResponse:
         """
-        Process uploaded PDF file and save text in 10-page chunks
+        Process uploaded PDF file and save text in 10-page per part
 
         Args:
             file: FastAPI UploadFile object
@@ -63,16 +60,11 @@ class PDFService:
                 with open(part_path, 'w', encoding='utf-8') as f:
                     f.write(chunk_text)
 
-                logger.info(f"Saved {part_filename} (pages {start_page + 1}-{end_page})")
                 part_number += 1
             doc.close()
-
-            total_parts = part_number - 1
-            logger.info(f"Processing complete: {total_pages} pages split into {total_parts} parts")
             return PDFSuccessResponse(pdf_filename=pdf_filename, total_pages=total_pages)
 
 
         except Exception as e:
             error_message = f"Error occurred while extracting the text from the PDF: {str(e)}"
-            logger.error(error_message)
             return PDFErrorResponse(error=error_message)

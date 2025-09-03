@@ -37,7 +37,7 @@ async def root():
     return {"message": "PDF Summarizer API",
             "version": "1.0.0",
             "purpose": "Test task",
-            "description": "A detailed PDF summarizer designed and implemented by EsakkiMuthu"}
+            "description": "A detailed PDF summarizer"}
 
 
 if __name__ == "__main__":

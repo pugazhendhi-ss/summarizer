@@ -72,7 +72,9 @@ pip install -r requirements.txt
 Create a `.env` file in the project root with the following variables:
 ```env
 OPENAI_API_KEY=your_openai_api_key
-# Add other configuration variables as needed
+VECTOR_PERSIST=false
+EMBEDDING_MODEL=all-MiniLM-L6-v2
+API_BASE_URL=http://127.0.0.1:8000
 ```
 
 ## Usage
@@ -138,7 +140,10 @@ Handles interactive chat sessions, maintaining context and providing relevant re
 
 The application uses environment variables for configuration. Key settings include:
 
-- `OPENAI_API_KEY`: Required for LLM functionality
+- `OPENAI_API_KEY`: Required for LLM functionality (must be provided by user)
+- `VECTOR_PERSIST`: Set to `false` for non-persistent vector storage
+- `EMBEDDING_MODEL`: Uses `all-MiniLM-L6-v2` for document embeddings
+- `API_BASE_URL`: Default is `http://127.0.0.1:8000`
 - API host and port can be configured in `main.py`
 - CORS settings are configured to allow all origins (modify for production)
 
